@@ -14,9 +14,9 @@
   register: rvm_current_version
   when: rvm_binary.stat.exists
 
-- name: Install rvm installer
-  get_url:
-    url: '{{ rvm1_rvm_latest_installer }}'
+- name: Place rvm installer
+  copy:
+    src: rvm-installer.sh
     dest: '{{ rvm1_temp_download_path }}/rvm-installer.sh'
   when: not rvm_installer.stat.exists
 
@@ -32,6 +32,7 @@
   when: rvm1_gpg_keys != ''
   become: yes
   become_user: '{{ rvm1_user }}'
+  environment: '{{ proxy_env }}'
 
 - name: Install rvm
   command: >
