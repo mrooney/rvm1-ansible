@@ -41,6 +41,7 @@
   when: not rvm_binary.stat.exists
   become: yes
   become_user: '{{ rvm1_user }}'
+  environment: '{{ proxy_env }}'
 
 - name: Update rvm
   shell: '{{ rvm1_rvm }} get {{ rvm1_rvm_version }} && {{ rvm1_rvm }} reload'
@@ -48,6 +49,7 @@
   when: rvm_binary.stat.exists and rvm1_rvm_check_for_updates
   become: yes
   become_user: '{{ rvm1_user }}'
+  environment: '{{ proxy_env }}'
 
 - name: Configure rvm
   command: '{{ rvm1_rvm }} autolibs {{ rvm1_autolib_mode }}'
