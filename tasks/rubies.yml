@@ -14,6 +14,7 @@
   with_items: '{{ detect_rubies.results }}'
   become: yes
   become_user: '{{ rvm1_user }}'
+  environment: '{{ proxy_env }}'
 
 - name: Detect default ruby version
   command: '{{ rvm1_rvm }} alias list default'
@@ -50,7 +51,8 @@
   changed_when: '"Successfully installed bundler" in bundler_install.stdout'
   become: yes
   become_user: '{{ rvm1_user }}'
-  
+  environment: '{{ proxy_env }}'
+
 - name: Symlink ruby related binaries on the system path
   file:
     state: 'link'
@@ -60,7 +62,7 @@
     group: 'root'
   when: not '--user-install' in rvm1_install_flags
   with_items: '{{ rvm1_symlink_binaries }}'
-  
+
 - name: Detect if ruby version can be deleted
   command: '{{ rvm1_rvm }} {{ rvm1_delete_ruby }} do true'
   changed_when: False
